@@ -32,16 +32,16 @@ dataset_info:
     dtype: int64
   splits:
   - name: train
-    num_bytes: 1782704
+    num_bytes: 2219404
     num_examples: 1600
   - name: validation
-    num_bytes: 222990
+    num_bytes: 277562
     num_examples: 200
   - name: test
-    num_bytes: 222311
+    num_bytes: 277043
     num_examples: 200
-  download_size: 1230714
-  dataset_size: 2228005
+  download_size: 2466944
+  dataset_size: 2774009
 configs:
 - config_name: m3-4
   data_files:
