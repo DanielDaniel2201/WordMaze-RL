@@ -153,6 +153,10 @@ That format is intentional. Parsing `<answer>...</answer>` and splitting on ` ->
 
 Roughly ~222 examples per `(word_length, max_moves)` pair; see `data/wordmaze-m4-6/metadata.json` for exact counts and generation failure stats.
 
+![Wordmaze m4-6 composition: 2,000 puzzles balanced across word length and move count, plus the dictionary-to-ladder-graph sizes per length](https://huggingface.co/datasets/immortal3/wordmaze/resolve/main/dataset_stats.png)
+
+This repo ships **two configs**: `m4-6` (harder, the default) and `m3-4` (easier, 3-4 moves). Load either by name.
+
 **Important:** The word list is **not** censored. It follows frequency data, so some start/goal pairs may be offensive. Filter at load time if that matters for your use case.
 
 ## Fields
@@ -185,15 +189,24 @@ The bundled `solution` / `answer` / `path` are **one** valid path found during g
 
 Six-letter puzzles are harder to sample (many random walks hit dead ends); the metadata `failures` block records how often that happened during the run.
 
-Regenerate or change move counts with `create_dataset.py` in this directory.
+### Reproduce
+
+The generator is a single self-contained script, [`create_dataset.py`](create_dataset.py). Its dependencies are declared inline (PEP 723), so [uv](https://docs.astral.sh/uv/) runs it with zero setup:
+
+```bash
+# hard config (m4-6, this card)
+uv run create_dataset.py --move-counts 4-6 --word-lengths 4-6 --num-examples 2000 --seed 42
+
+# easier config (m3-4)
+uv run create_dataset.py --move-counts 3-4 --word-lengths 4-6 --num-examples 2000 --seed 13
+```
 
 ## Loading
 
 ```python
 from datasets import load_dataset
 
-# After publishing on Hugging Face:
-ds = load_dataset("YOUR_HF_USERNAME/wordmaze-m4-6")
+ds = load_dataset("immortal3/wordmaze", "m4-6")   # or "m3-4" for the easier config
 
 # Or from local JSONL under data/wordmaze-m4-6/data/:
 # ds = load_dataset("json", data_files={
@@ -211,7 +224,7 @@ row = ds["test"][0]
 # Grade against row["start"], row["goal"], row["password"], row["word_length"], row["max_moves"]
 ```
 
-A reference grader (format checks, dictionary membership, password match) lives in `eval/grading.py`. For RL, a simple binary reward works: `1` if the parsed path passes all checks, else `0`. Partial credit on individual checks is possible if you want denser signal.
+A reference grader follows straight from the rules above (format, dictionary membership, one-letter steps, password match). For RL a binary reward works: `1` if the parsed path passes all checks, else `0`. Per-check booleans give a denser signal if you want it.
 
 ## What this is good for
 
