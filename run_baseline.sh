@@ -20,7 +20,8 @@ python="$venv/bin/python"
 "$python" verifier.py
 
 # The first call installs vLLM, downloads Qwen, and proves one inference works.
-"$python" evaluate.py --config m3-4 --split validation --limit 1
-"$python" evaluate.py --config m3-4 --split validation --limit 20
-"$python" evaluate.py --config m3-4 --split test
-"$python" evaluate.py --config m4-6 --split test
+eval_args=(--max-tokens "${WORDMAZE_MAX_TOKENS:-32768}" --max-model-len "${WORDMAZE_MAX_MODEL_LEN:-65536}")
+"$python" evaluate.py "${eval_args[@]}" --config m3-4 --split validation --limit 1
+"$python" evaluate.py "${eval_args[@]}" --config m3-4 --split validation --limit 20
+"$python" evaluate.py "${eval_args[@]}" --config m3-4 --split test
+"$python" evaluate.py "${eval_args[@]}" --config m4-6 --split test
