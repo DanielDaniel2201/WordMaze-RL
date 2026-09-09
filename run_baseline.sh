@@ -2,16 +2,21 @@
 set -euo pipefail
 
 export HF_HOME="${HF_HOME:-/workspace/cache/huggingface}"
-export UV_TORCH_BACKEND="${UV_TORCH_BACKEND:-cu128}"
 export VLLM_CACHE_ROOT="${VLLM_CACHE_ROOT:-/workspace/cache/vllm}"
 export VLLM_WORKER_MULTIPROC_METHOD="${VLLM_WORKER_MULTIPROC_METHOD:-spawn}"
 
 command -v uv >/dev/null || { echo "uv is required" >&2; exit 1; }
 git lfs pull
-uv run verifier.py
+venv="${WORDMAZE_VENV:-/root/.cache/wordmaze-venv}"
+uv venv --allow-existing --python 3.11 "$venv"
+uv pip install --python "$venv/bin/python" --torch-backend=cu128 \
+  "vllm==0.26.0" "pandas>=2.2" "pyarrow>=17" "wordfreq==3.1.1"
+python="$venv/bin/python"
+"$python" -c 'import torch; assert torch.version.cuda == "12.8", torch.version.cuda; assert torch.cuda.is_available(); print("torch", torch.__version__, "CUDA", torch.version.cuda)'
+"$python" verifier.py
 
 # The first call installs vLLM, downloads Qwen, and proves one inference works.
-uv run evaluate.py --config m3-4 --split validation --limit 1
-uv run evaluate.py --config m3-4 --split validation --limit 20
-uv run evaluate.py --config m3-4 --split test
-uv run evaluate.py --config m4-6 --split test
+"$python" evaluate.py --config m3-4 --split validation --limit 1
+"$python" evaluate.py --config m3-4 --split validation --limit 20
+"$python" evaluate.py --config m3-4 --split test
+"$python" evaluate.py --config m4-6 --split test
