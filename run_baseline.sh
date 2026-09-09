@@ -4,10 +4,11 @@ set -euo pipefail
 export HF_HOME="${HF_HOME:-/workspace/cache/huggingface}"
 export VLLM_CACHE_ROOT="${VLLM_CACHE_ROOT:-/workspace/cache/vllm}"
 export VLLM_WORKER_MULTIPROC_METHOD="${VLLM_WORKER_MULTIPROC_METHOD:-spawn}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-/workspace/cache/uv}"
 
 command -v uv >/dev/null || { echo "uv is required" >&2; exit 1; }
 git lfs pull
-venv="${WORDMAZE_VENV:-/root/.cache/wordmaze-venv}"
+venv="${WORDMAZE_VENV:-/workspace/cache/wordmaze-venv}"
 uv venv --allow-existing --python 3.11 "$venv"
 uv pip install --python "$venv/bin/python" --torch-backend=cu128 \
   "vllm==0.24.0" "pandas>=2.2" "pyarrow>=17" "wordfreq==3.1.1"
