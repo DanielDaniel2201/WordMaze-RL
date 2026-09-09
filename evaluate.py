@@ -10,7 +10,7 @@ Run on a Linux GPU machine, for example:
 # dependencies = [
 #     "pandas>=2.2",
 #     "pyarrow>=17",
-#     "vllm==0.26.0",
+#     "vllm==0.24.0",
 #     "wordfreq==3.1.1",
 # ]
 # ///

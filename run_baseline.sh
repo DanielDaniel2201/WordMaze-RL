@@ -10,7 +10,7 @@ git lfs pull
 venv="${WORDMAZE_VENV:-/root/.cache/wordmaze-venv}"
 uv venv --allow-existing --python 3.11 "$venv"
 uv pip install --python "$venv/bin/python" --torch-backend=cu128 \
-  "vllm==0.26.0" "pandas>=2.2" "pyarrow>=17" "wordfreq==3.1.1"
+  "vllm==0.24.0" "pandas>=2.2" "pyarrow>=17" "wordfreq==3.1.1"
 python="$venv/bin/python"
 "$python" -c 'import torch; assert torch.version.cuda == "12.8", torch.version.cuda; assert torch.cuda.is_available(); print("torch", torch.__version__, "CUDA", torch.version.cuda)'
 "$python" verifier.py
