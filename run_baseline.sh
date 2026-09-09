@@ -3,6 +3,7 @@ set -euo pipefail
 
 export HF_HOME="${HF_HOME:-/workspace/cache/huggingface}"
 export VLLM_CACHE_ROOT="${VLLM_CACHE_ROOT:-/workspace/cache/vllm}"
+export VLLM_WORKER_MULTIPROC_METHOD="${VLLM_WORKER_MULTIPROC_METHOD:-spawn}"
 
 command -v uv >/dev/null || { echo "uv is required" >&2; exit 1; }
 git lfs pull
