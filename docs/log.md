@@ -94,4 +94,3 @@ You are sending unauthenticated requests to the HF Hub
 - 本地 verifier 自检已通过。
 - 依赖解析已经能够完成到安装阶段。
 - GPU baseline 尚未成功运行；只有出现 `torch 2.11.0+cu128 CUDA 12.8`、模型成功加载并产生第一条评测结果后，才能视为 smoke test 通过。
-
