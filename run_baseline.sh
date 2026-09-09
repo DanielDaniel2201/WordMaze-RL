@@ -5,6 +5,7 @@ export HF_HOME="${HF_HOME:-/workspace/cache/huggingface}"
 export VLLM_CACHE_ROOT="${VLLM_CACHE_ROOT:-/workspace/cache/vllm}"
 export VLLM_WORKER_MULTIPROC_METHOD="${VLLM_WORKER_MULTIPROC_METHOD:-spawn}"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-/workspace/cache/uv}"
+export UV_HTTP_TIMEOUT="${UV_HTTP_TIMEOUT:-300}"
 
 command -v uv >/dev/null || { echo "uv is required" >&2; exit 1; }
 git lfs pull
