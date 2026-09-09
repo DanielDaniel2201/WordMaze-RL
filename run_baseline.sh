@@ -11,6 +11,7 @@ command -v uv >/dev/null || { echo "uv is required" >&2; exit 1; }
 git lfs pull
 venv="${WORDMAZE_VENV:-/workspace/cache/wordmaze-venv}"
 uv venv --allow-existing --python 3.11 "$venv"
+export PATH="$venv/bin:$PATH"
 uv pip install --python "$venv/bin/python" --torch-backend=cu128 \
   --extra-index-url https://wheels.vllm.ai/0.24.0/cu129 \
   "vllm==0.24.0+cu129" "pandas>=2.2" "pyarrow>=17" "wordfreq==3.1.1"
