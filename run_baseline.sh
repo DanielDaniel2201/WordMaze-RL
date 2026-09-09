@@ -2,6 +2,8 @@
 set -euo pipefail
 
 export HF_HOME="${HF_HOME:-/workspace/cache/huggingface}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-/workspace/cache/uv}"
+export UV_TORCH_BACKEND="${UV_TORCH_BACKEND:-auto}"
 export VLLM_CACHE_ROOT="${VLLM_CACHE_ROOT:-/workspace/cache/vllm}"
 export VLLM_WORKER_MULTIPROC_METHOD="${VLLM_WORKER_MULTIPROC_METHOD:-spawn}"
 
